@@ -1,0 +1,6 @@
+[submodule "glfwpp"]
+	path = glfwpp
+	url = https://github.com/water-chika/glfwpp
+[submodule "terminal_display_vulkan_renderer"]
+	path = terminal_display_vulkan_renderer
+	url = https://github.com/water-chika/terminal_display_vulkan_renderer
