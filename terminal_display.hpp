@@ -4,9 +4,10 @@
 
 class terminal_display {
 public:
-	terminal_display() : m_window{} {
+	terminal_display() : m_window{}, m_renderer{} {
 		glfwpp::init();
 		create_window();
+		transfer_surface();
 	}
 	~terminal_display() {
 		destroy_window();
@@ -24,6 +25,13 @@ private:
 	}
 	void destroy_window() {
 		m_window.destroy();
+	}
+	void transfer_surface() {
+		VkSurfaceKHR surface{};
+		VkResult res = glfwpp::create_surface(m_renderer.get_instance(), m_window, nullptr, &surface);
+		assert(res == VK_SUCCESS);
+		assert(surface);
+		m_renderer.set_surface(surface);
 	}
 	glfwpp::window m_window;
 	terminal_display_vulkan_renderer m_renderer;
