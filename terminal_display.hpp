@@ -27,6 +27,16 @@ private:
 		m_window.destroy();
 	}
 	void transfer_surface() {
+		uint32_t instance_extensions_count = 0;
+		const char** instance_extensions_raw = glfwpp::get_required_instance_extensions(&instance_extensions_count);
+		std::vector<std::string> instance_extensions(instance_extensions_count);
+		std::ranges::copy(std::span(instance_extensions_raw, instance_extensions_count), instance_extensions.begin());
+
+		m_renderer.add_instance_extensions(instance_extensions);
+		while (!m_renderer.is_updated()) {
+			m_renderer.update();
+		}
+		
 		VkSurfaceKHR surface{};
 		VkResult res = glfwpp::create_surface(m_renderer.get_instance(), m_window, nullptr, &surface);
 		assert(res == VK_SUCCESS);
@@ -34,5 +44,5 @@ private:
 		m_renderer.set_surface(surface);
 	}
 	glfwpp::window m_window;
-	terminal_display_vulkan_renderer m_renderer;
+	terminal_display_vulkan_renderer::renderer m_renderer;
 };
